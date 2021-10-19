@@ -69,10 +69,13 @@ jobs:
       -
         name: Deploy to docker
         uses: chaplyk/docker-compose-remote-action@v1
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHATID: ${{ secrets.TELEGRAM_CHATID }}
+          DEBUG: ${{ secrets.DEBUG }}
         with:
           ssh_host: ${{ secrets.DEPLOY_HOST }}
           ssh_user: ${{ secrets.DEPLOY_USER }}
           ssh_key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
           compose_file: docker-compose.prod.yaml
           pull: true
-          options: -e TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }} -e TELEGRAM_CHATID=${{ secrets.TELEGRAM_CHATID }} -e DEBUG=${{ secrets.DEBUG }}
