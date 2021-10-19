@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  app:
+    image: salemgolem/glazov-bot:${VERSION}
+    restart: always
+    environment:
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+      TELEGRAM_CHATID: ${TELEGRAM_CHATID}
+      DEBUG: ${DEBUG}

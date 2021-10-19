@@ -2,13 +2,11 @@ name: ci
 
 on:
   push:
-    branches:
-      - '**'
     tags:
       - 'v*.*.*'
   pull_request:
     branches:
-      - 'master'
+      - $default-branch
 
 jobs:
   docker:
@@ -27,9 +25,6 @@ jobs:
             salemgolem/glazov-bot
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
@@ -61,3 +56,22 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           repository: salemgolem/glazov-bot
+
+  deployment:
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: docker
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    steps:
+      -
+        name: Deploy to docker
+        uses: wshihadeh/docker-deployment-action@v1
+        with:
+          remote_docker_host: ${{ secrets.DEPLOY_HOSTNAME }}
+          ssh_private_key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          ssh_public_key: ${{ secrest.DEPLOY_SSH_PUBLIC_KEY }}
+          deployment_mode: docker-compose
+          copy_stack_file: true
+          deploy_path: ~/apps/glazov-bot
+          stack_file_name: docker-compose.prod.yaml
+          keep_files: 3
