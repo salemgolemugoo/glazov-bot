@@ -75,3 +75,6 @@ jobs:
           deploy_path: ~/apps/glazov-bot
           stack_file_name: docker-compose.prod.yaml
           keep_files: 3
+          args: up -d
+          docker_prune: true
+          pull_images_first: true
