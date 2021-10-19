@@ -63,6 +63,9 @@ func main() {
 				if err != nil {
 					log.Printf("Failed to promote the user [%s]", m.Sender.Username)
 				} else {
+					// Sleep for a while to give telegram some time to update admins
+					time.Sleep(3 * time.Second)
+
 					b.SetAdminTitle(m.Chat, m.Sender, nickname)
 				}
 
