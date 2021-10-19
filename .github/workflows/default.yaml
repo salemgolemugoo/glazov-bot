@@ -64,17 +64,15 @@ jobs:
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     steps:
       -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
         name: Deploy to docker
-        uses: wshihadeh/docker-deployment-action@v1
+        uses: chaplyk/docker-compose-remote-action@v1
         with:
-          remote_docker_host: ${{ secrets.DEPLOY_HOSTNAME }}
-          ssh_private_key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
-          ssh_public_key: ${{ secrets.DEPLOY_SSH_PUBLIC_KEY }}
-          deployment_mode: docker-compose
-          copy_stack_file: true
-          deploy_path: ~/apps/glazov-bot
-          stack_file_name: docker-compose.prod.yaml
-          keep_files: 3
-          args: up -d
-          docker_prune: true
-          pull_images_first: true
+          ssh_host: ${{ secrets.DEPLOY_HOST }}
+          ssh_user: ${{ secrets.DEPLOY_USER }}
+          ssh_key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+          compose_file: docker-compose.prod.yml
+          pull: true
+          options: -e TELEGRAM_TOKEN -e TELEGRAM_CHATID -e DEBUG
