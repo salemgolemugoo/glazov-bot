@@ -6,7 +6,7 @@ on:
       - 'v*.*.*'
   pull_request:
     branches:
-      - $default-branch
+      - master
 
 jobs:
   docker:
@@ -69,7 +69,7 @@ jobs:
         with:
           remote_docker_host: ${{ secrets.DEPLOY_HOSTNAME }}
           ssh_private_key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
-          ssh_public_key: ${{ secrest.DEPLOY_SSH_PUBLIC_KEY }}
+          ssh_public_key: ${{ secrets.DEPLOY_SSH_PUBLIC_KEY }}
           deployment_mode: docker-compose
           copy_stack_file: true
           deploy_path: ~/apps/glazov-bot
