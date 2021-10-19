@@ -73,6 +73,6 @@ jobs:
           ssh_host: ${{ secrets.DEPLOY_HOST }}
           ssh_user: ${{ secrets.DEPLOY_USER }}
           ssh_key: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
-          compose_file: docker-compose.prod.yml
+          compose_file: docker-compose.prod.yaml
           pull: true
           options: -e TELEGRAM_TOKEN -e TELEGRAM_CHATID -e DEBUG
